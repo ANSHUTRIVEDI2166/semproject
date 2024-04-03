@@ -120,3 +120,62 @@ void showAttendanceStats(int presentCount, int totalCount)
     cout << "Absent: " << totalCount - presentCount << endl;
     cout << "Attendance Percentage: " << attendancePercentage << "%" << endl;
 }
+void takeAttendance()
+{
+    ifstream read("students.csv");
+    ofstream attendanceFile("attendance.csv");
+
+    int presentCount = 0;
+    int totalCount = 0;
+
+    Student student;
+    string line;
+
+    cout << "\nAttendance\n";
+    cout << "\nPress Pfor present and a for Absent\n";
+    cout << "---------------------\n";
+
+    while (getline(read, line))
+    {
+        stringstream ss(line);
+        getline(ss, student.rollnumber, ',');
+        getline(ss, student.UserName, ',');
+        cout << student.UserName << ": ";
+        cin >> student.status;
+        attendanceFile << student.rollnumber << "," << student.UserName << "," << student.status << "\n";
+
+        if (student.status == 'p' || student.status == 'P')
+        {
+
+            presentCount++;
+        }
+
+        totalCount++;
+    }
+
+    cout << "\nAttendance marked successfully!";
+    showAttendanceStats(presentCount, totalCount);
+    cout << "\nPress any key to continue.";
+    getchar();
+    getchar();
+}
+
+void addNewStudent()
+{
+    cout << "\n ------- Add New Student -------";
+
+    Student newStudent;
+    cout << "\n Enter Roll no for the new student: ";
+    cin >> newStudent.rollnumber;
+    cout << " Enter Name for the new student: ";
+    cin >> newStudent.UserName;
+
+    ofstream write("students.csv", ios::app);
+
+    write << newStudent.rollnumber << "," << newStudent.UserName << "\n";
+
+    cout << "\n Student added successfully!";
+    cout << "\n Press any key to continue.";
+    getchar();
+    getchar();
+}
